@@ -41,9 +41,10 @@ app.get('/projectData', function(request, response) {
 
 app.post('/', function(request, response) {
     projectData = {
-        date: request.body.date,
-        temperature: request.body.temperature,
-        content: request.body.content
+        countryCode: request.body.countryCode,
+        latitude: request.body.latitude,
+        longitude: request.body.longitude,
+        placename: request.body.placename
     };
     console.log(projectData);
     

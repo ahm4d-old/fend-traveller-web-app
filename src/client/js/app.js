@@ -1,15 +1,13 @@
 /* Global Variables */
 
-//api.openweathermap.org/data/2.5/forecast/daily?zip={zip code},{country code}&appid={API key}
-//const { url } = require("inspector");
-
 const serverURL = 'http://localhost:8888';
-const apiBaseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
+const apiBaseURL = 'http://api.geonames.org/postalCodeSearchJSON?postalcode=9011&maxRows=10&username=manpreetsingh';
 const apiKey = '342a04b4b94b19a1f65865381da66b55'; 
 let zip = document.getElementById('zip').value;
-const tempDiv = document.getElementById('temp');
-const dateDiv = document.getElementById('date');
-const contentDiv = document.getElementById('content');
+const countryCodeDiv = document.getElementById('country-code');
+const latitudeDiv = document.getElementById('lat');
+const longitudeDiv = document.getElementById('lng');
+const placeNameDiv = document.getElementById('placename');
 
 
 // Create a new date instance dynamically with JS
@@ -18,14 +16,14 @@ let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 
 
 
-const fetchWaetherData = async (url)=>{
+const fetchData = async (url)=>{
     const response = await fetch(url) 
         try {
             const data = await response.json();
             console.log(data);
             return data;
         } catch(error) {
-            console.log('fetchWeatherData Error', error);
+            console.log('fetchData Error', error);
         }
     }
 
@@ -39,13 +37,14 @@ const handleGenerateButton = async function () {
         zip = document.getElementById('zip').value; 
     }
     let url = `${apiBaseURL}${zip}&appid=${apiKey}&units=imperial`;
-    const textAreaContent = document.getElementById('feelings').value;
     //console.log(url);
-    const weatherData = await fetchWaetherData(url);
+    const weatherData = await fetchData(apiBaseURL);
+    console.log(weatherData);
     const data = {
-        date: newDate,
-        temperature: weatherData.main.temp,
-        content: textAreaContent
+        countryCode: weatherData.postalCodes[0].countryCode,
+        latitude: weatherData.postalCodes[0].lat,
+        longitude: weatherData.postalCodes[0].lng,
+        placename: weatherData.postalCodes[0].placeName
     }
     await postData(serverURL, data);
     updateUIElements();
@@ -81,9 +80,10 @@ const updateUIElements = async ()=> {
         const data = await response.json();
         console.log(data);
 
-        dateDiv.innerText = data.date;
-        tempDiv.innerText = data.temperature;
-        contentDiv.innerText = data.content;
+        countryCodeDiv.innerText = data.countryCode;
+        latitudeDiv.innerText = data.latitude;
+        longitudeDiv.innerText = data.longitude;
+        placeNameDiv.innerText = data.placename
 
     } catch(error) {
         console.log(error);
@@ -99,5 +99,5 @@ export {
     handleGenerateButton,
     updateUIElements,
     postData,
-    fetchWaetherData
+    fetchData
 }

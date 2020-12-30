@@ -1,5 +1,5 @@
 body{
-    background: #fffff8;
+    background: #162B32;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     margin: 0;
 }
@@ -9,58 +9,119 @@ body{
     grid-auto-rows: minmax(50px, auto);
     grid-template-columns: 50%;
     height:100vh;
-    background: #12151F;
-    color: #05F4B7;
+    color: #eee;
     justify-content: center;
     grid-gap: 2em;
     font-size: 20px;
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .holder{
     display: grid;
+    // border: 1px solid #333;
+    border-radius: 8px;
 }
 
 .entry{
-    background: #3b4a6b;
+    background: #E1FCFD;
     font-size: 1.5em;
     text-align: center;
+    color: #4A5FC1;
 }
 
 
 .headline {
+    grid-template-rows: 50% 50%;
     font-size: 2em;
     text-align: center;
 }
 
-input{
+input, select{
     display:grid;
     height: 60px;
     width: 80%;
-    background:#3b4a6b;
-    color: #eee;
+    background:#E1FCFD;
+    color: rgba($color: #0C1115, $alpha: 0.7);
     font-size: 1em;
-    font-family: 'Oswald', sans-serif;
-    border: none;
+    border: 1px solid #333;
+    border-radius: 8px;
+
 }
 
-.zip {
+#field {
     grid-template-rows: 70%;
     justify-content: center;
 }
 
+.title {
+    text-align: center;
+    font-size: 1.4em;
+    color: #0C1115;
+}
+
+
+button, #info-button{
+    // display: grid;
+    // width: 50%;
+    // height: 50%;
+    background: #9CF6FB;
+    color: #0C1115;
+    border-radius: 8px;
+    padding: 8px 16px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    // margin: 4px 2px;
+    opacity: 0.8;
+    transition: 0.3s;
+    display: inline-block;
+    cursor: pointer;
+
+    &:hover {
+        // background: #2171c2;
+        cursor: pointer;
+        opacity: 1;
+    }
+}
+
+#info-button {
+    display: inline;
+    background-color: inherit;
+    padding: 0.2em;
+    font-size: 0.9em;
+    color: #eee;
+    text-decoration: none;
+}
+
 @media only screen and (min-width: 900px){
-    .zip {
+    #field {
         grid-template-columns: 30% 30%;
         justify-content: center;
         grid-gap: 1.5em;
     }
 
-    input{
+    .headline {
+        grid-template-columns: 60% 40%;
+    }
+
+    input, select{
         display:grid;
         height: 60px;
         width: auto;
     }
+
+    button, #info-button {
+        padding: 16px;
+        font-size: 2.2rem;
+    }
+
+    #info-button {
+        display: inline-block;
+        text-align: right;
+        padding-top: 1.3rem;
+    }
+
+ 
 }
 
 /*  Basic Styling To Override Default For Basic HTML Elements */
@@ -80,34 +141,15 @@ label{
     border: none;
 } */
 
-button{
-    display: grid;
-    margin-top: auto;
-    background: #00458B;
-    color: #eee;
-    font-size: 26px;
-    font-family: 'Oswald', sans-serif;
-    border: none;
-    box-shadow: 2px 4px 5px #444;
-}
-
-
-button:hover {
-    background: #2171c2;
-    cursor: pointer;
-}
 
 
 h1{
     font-size: 36px;
+    font-weight: 600;
+    text-align: left;
 }
 
-textarea{
-    background:#3b4a6b;
-    color: #eee;
-    font-size: 1em;
-    font-family: 'Oswald', sans-serif;
-}
+
 /* Reset style for HTML element on active to have no border*/
 input:focus,
 select:focus,
@@ -116,21 +158,22 @@ button:focus {
     outline: none;
 }
 /* Style for Placeholder Text*/
-::placeholder { /* Firefox, Chrome, Opera */ 
-    color: #eee; 
+::placeholder, option[label] { /* Firefox, Chrome, Opera */ 
+    color: rgba($color: #0C1115, $alpha: 0.7); 
+    // font-family: 'Oswald', sans-serif;
+
+} 
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */ 
+    color: #0C1115; 
     opacity: 0.3;
     font-family: 'Oswald', sans-serif;
 
 } 
   
-:-ms-input-placeholder { /* Internet Explorer 10-11 */ 
-    color: #eee; 
-    font-family: 'Oswald', sans-serif;
-
-} 
-  
 ::-ms-input-placeholder { /* Microsoft Edge */ 
-    color: #eee; 
+    color: #0C1115;
+    opacity: 0.3; 
     font-family: 'Oswald', sans-serif;
 
 } 
@@ -153,7 +196,4 @@ button:focus {
 
 }
 
-.title{
-
-}
 */
