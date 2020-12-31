@@ -1,9 +1,8 @@
 /* Global Variables */
 
 const serverURL = 'http://localhost:8888';
-const apiBaseURL = 'http://api.geonames.org/postalCodeSearchJSON?postalcode=9011&maxRows=10&username=manpreetsingh';
-const apiKey = '342a04b4b94b19a1f65865381da66b55'; 
-let zip = document.getElementById('zip').value;
+const apiGeonameURL = 'http://api.geonames.org/searchJSON?';
+let destination = document.getElementById('field').value;
 const countryCodeDiv = document.getElementById('country-code');
 const latitudeDiv = document.getElementById('lat');
 const longitudeDiv = document.getElementById('lng');
@@ -12,7 +11,8 @@ const placeNameDiv = document.getElementById('placename');
 
 // Create a new date instance dynamically with JS
 let d = new Date();
-let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+// let currentDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+// d.getFullYear() +'-'+ d.getMonth()+'-'+ d.getDate();
 
 
 
@@ -30,26 +30,38 @@ const fetchData = async (url)=>{
 
     
 const handleGenerateButton = async function () {
-    if (zip.length === 0) {
-        zip = '94040,us';
+    if (destination.length === 0) {
+        destination = document.getElementById('field').value; 
     }
     else {
-        zip = document.getElementById('zip').value; 
+        destination = document.getElementById('field').value; 
     }
-    let url = `${apiBaseURL}${zip}&appid=${apiKey}&units=imperial`;
+    let url = `${apiGeonameURL}q=${destination}&maxRows=10&username=manpreetsingh`;
     //console.log(url);
-    const weatherData = await fetchData(apiBaseURL);
-    console.log(weatherData);
+    const destinationData = await fetchData(url);
+    console.log(destinationData);
     const data = {
-        countryCode: weatherData.postalCodes[0].countryCode,
-        latitude: weatherData.postalCodes[0].lat,
-        longitude: weatherData.postalCodes[0].lng,
-        placename: weatherData.postalCodes[0].placeName
+        countryCode: destinationData.geonames[0].countryCode,
+        latitude: destinationData.geonames[0].lat,
+        longitude: destinationData.geonames[0].lng,
+        general: destinationData.geonames[0].fcodeName,
+        date: document.getElementById('date-input').value,
+        // daysLeft: daysLeft(document.getElementById('date-input').value)
     }
     await postData(serverURL, data);
     updateUIElements();
 }
 
+
+// const daysLeft = (firstDate) =>{
+//     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+//     const firstDate = new Date(2008, 1, 12);
+//     let currentDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+//     const diffDays = Math.round(Math.abs((firstDate - currentDate) / oneDay));
+//     console.log(firstDate, currentDate);
+//     return diffDays;
+// }
 
 
 const postData = async ( url = '', data = {})=>{
@@ -83,7 +95,9 @@ const updateUIElements = async ()=> {
         countryCodeDiv.innerText = data.countryCode;
         latitudeDiv.innerText = data.latitude;
         longitudeDiv.innerText = data.longitude;
-        placeNameDiv.innerText = data.placename
+        placeNameDiv.innerText = data.general;
+        document.getElementById('date').innerText = data.date;
+
 
     } catch(error) {
         console.log(error);

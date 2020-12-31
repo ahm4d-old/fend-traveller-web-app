@@ -44,7 +44,9 @@ app.post('/', function(request, response) {
         countryCode: request.body.countryCode,
         latitude: request.body.latitude,
         longitude: request.body.longitude,
-        placename: request.body.placename
+        general: request.body.general,
+        date: request.body.date,
+        daysLeft: request.body.daysLeft,
     };
     console.log(projectData);
     
