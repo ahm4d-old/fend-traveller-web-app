@@ -10,9 +10,8 @@ const placeNameDiv = document.getElementById('placename');
 
 
 // Create a new date instance dynamically with JS
-let d = new Date();
-// let currentDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-// d.getFullYear() +'-'+ d.getMonth()+'-'+ d.getDate();
+// let d = new Date();
+// let currentDate = d.getFullYear()+'/'+d.getMonth()+'/'+ d.getDate();
 
 
 
@@ -39,29 +38,34 @@ const handleGenerateButton = async function () {
     let url = `${apiGeonameURL}q=${destination}&maxRows=10&username=manpreetsingh`;
     //console.log(url);
     const destinationData = await fetchData(url);
+    const dateInput = document.getElementById('date-input').value;
     console.log(destinationData);
     const data = {
         countryCode: destinationData.geonames[0].countryCode,
         latitude: destinationData.geonames[0].lat,
         longitude: destinationData.geonames[0].lng,
         general: destinationData.geonames[0].fcodeName,
-        date: document.getElementById('date-input').value,
-        // daysLeft: daysLeft(document.getElementById('date-input').value)
+        date: dateInput,
+        daysLeft: daysLeft(dateInput)
     }
     await postData(serverURL, data);
     updateUIElements();
 }
 
 
-// const daysLeft = (firstDate) =>{
-//     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-//     const firstDate = new Date(2008, 1, 12);
-//     let currentDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const daysLeft = (firstDate) =>{
+    const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    let dateFirst = new Date(firstDate);
+    let currentDate = new Date();
 
-//     const diffDays = Math.round(Math.abs((firstDate - currentDate) / oneDay));
-//     console.log(firstDate, currentDate);
-//     return diffDays;
-// }
+    // time difference
+    let timeDiff = Math.abs(currentDate.getTime() - dateFirst.getTime());
+
+    // days difference
+    let diffDays = Math.ceil(timeDiff / oneDay);
+    console.log(dateFirst, currentDate);
+    return diffDays;
+}
 
 
 const postData = async ( url = '', data = {})=>{
@@ -74,17 +78,7 @@ const postData = async ( url = '', data = {})=>{
       },
       body: JSON.stringify(data), 
     });
-      /*try {
-        const newData = await response.json();
-        console.log(newData);
-        return newData;
-      }catch(error) {
-      console.log("error", error);
-      }*/
   }
-
-//postData(serverURL, data);
-
 
 const updateUIElements = async ()=> {
     const response = await fetch(`${serverURL}/projectData`);
