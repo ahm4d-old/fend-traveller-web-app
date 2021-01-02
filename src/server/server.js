@@ -1,24 +1,24 @@
-// Setup empty JS object to act as endpoint for all routes
-projectData = {};
-
 // Require Express to run server and routes
 const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser'); 
+const fetch = require("node-fetch");
+
+// to use environment variables for api key
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Start up an instance of app
 const app = express();
-
-/* Middleware*/
-//Here we are configuring express to use body-parser as middle-ware.
-const bodyParser = require('body-parser'); 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-// Cors for cross origin allowance
-const cors = require('cors');
 app.use(cors());
 
+
+// Cors for cross origin allowance
+
 // Initialize the main project folder
-app.use(express.static('dist'));
+app.use(express.static('dist/index.html'));
 
 
 // Setup Server
@@ -27,28 +27,22 @@ const server = app.listen(port, ()=>{
     console.log(`Server is running on port ${port}`)
 });
 
-/* Same as :
-const server = app.listen(port, listening);
-function listening(){
-    console.log(`running on port ${port}`);
-};
-*/
 
-app.get('/projectData', function(request, response) {
-    response.send(projectData);
+app.get('/', function(request, response) {
+    response.send('dist/index.html');
 });
 
 
-app.post('/', function(request, response) {
-    projectData = {
-        countryCode: request.body.countryCode,
-        latitude: request.body.latitude,
-        longitude: request.body.longitude,
-        general: request.body.general,
-        date: request.body.date,
-        daysLeft: request.body.daysLeft,
-    };
-    console.log(projectData);
-    
-    response.send(projectData);
+const apiGeonameURL = 'http://api.geonames.org/searchJSON?';
+app.post('/geoname', async function(request, response) {
+    const url = `${apiGeonameURL}q=${request.body.text}&maxRows=10&username=manpreetsingh`;
+    // console.log(url);
+    try {
+        const geonameResponse = await fetch(url);
+        const jsonData = await geonameResponse.json();
+        // console.log(jsonData);
+        response.send(jsonData);
+    } catch(error) {
+        console.log(error);
+    }
 })

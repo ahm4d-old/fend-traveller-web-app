@@ -306,22 +306,22 @@
     <div id = "days-left"></div>
    <div id = "lat"></div>
    <div id = "lng"></div>
-   <div id = "placename"></div>
+   <div id = "general"></div>
   </div>
   </div>
   </div>
 
 <script>
   // Check that service workers are supported
-  if ('serviceWorker' in navigator) {
-      // Use the window load event to keep the page load performant
-      window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/service-worker.js');
-      });
-  }
-  else {
-    console('No Support for Service Workers');
-  }
+  // if ('serviceWorker' in navigator) {
+  //     // Use the window load event to keep the page load performant
+  //     window.addEventListener('load', () => {
+  //         navigator.serviceWorker.register('/service-worker.js');
+  //     });
+  // }
+  // else {
+  //   console('No Support for Service Workers');
+  // }
  </script>
 </body>
 </html>

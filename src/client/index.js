@@ -1,15 +1,17 @@
-import { handleGenerateButton,
-        updateUIElements,
+import { handleSubmit,
         postData,
-        fetchData } from './js/app'
+        fetchData,
+        daysLeft } from './js/app'
+import { updateUI } from './js/updateUI'
 
 
 import './styles/style.scss'
 
 
 export {
-    handleGenerateButton,
-    updateUIElements,
+    handleSubmit,
+    updateUI,
     postData,
-    fetchData
+    fetchData,
+    daysLeft
 }

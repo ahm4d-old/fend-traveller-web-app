@@ -1,12 +1,10 @@
+import { updateUI } from './updateUI'
+
 /* Global Variables */
 
 const serverURL = 'http://localhost:8888';
-const apiGeonameURL = 'http://api.geonames.org/searchJSON?';
+// const apiGeonameURL = 'http://api.geonames.org/searchJSON?';
 let destination = document.getElementById('field').value;
-const countryCodeDiv = document.getElementById('country-code');
-const latitudeDiv = document.getElementById('lat');
-const longitudeDiv = document.getElementById('lng');
-const placeNameDiv = document.getElementById('placename');
 
 
 // Create a new date instance dynamically with JS
@@ -28,28 +26,43 @@ const fetchData = async (url)=>{
 
 
     
-const handleGenerateButton = async function () {
+const handleSubmit = async function () {
     if (destination.length === 0) {
-        destination = document.getElementById('field').value; 
+        destination = 'Paris'; 
     }
-    else {
-        destination = document.getElementById('field').value; 
+
+    // const dateInput = document.getElementById('date-input').value;
+    // console.log(destinationData);
+    const geonameResponse = await fetch(`${serverURL}/geoname`, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            'text': destination
+        }),
+    })
+    // console.log(response)
+
+    // recieve response from server and update UI
+    try {
+        const data = await geonameResponse.json();
+        console.log(data);
+        updateUI(data);
+    } catch (error) {
+        console.log("error: \n", error);
     }
-    let url = `${apiGeonameURL}q=${destination}&maxRows=10&username=manpreetsingh`;
-    //console.log(url);
-    const destinationData = await fetchData(url);
-    const dateInput = document.getElementById('date-input').value;
-    console.log(destinationData);
-    const data = {
-        countryCode: destinationData.geonames[0].countryCode,
-        latitude: destinationData.geonames[0].lat,
-        longitude: destinationData.geonames[0].lng,
-        general: destinationData.geonames[0].fcodeName,
-        date: dateInput,
-        daysLeft: daysLeft(dateInput)
-    }
-    await postData(serverURL, data);
-    updateUIElements();
+    // const data = {
+    //     countryCode: destinationData.geonames[0].countryCode,
+    //     latitude: destinationData.geonames[0].lat,
+    //     longitude: destinationData.geonames[0].lng,
+    //     general: destinationData.geonames[0].fcodeName,
+    //     date: dateInput,
+    //     daysLeft: daysLeft(dateInput)
+    // }
+    // await postData(serverURL, data);
+    // Client.updateUI(destinationData);
 }
 
 
@@ -80,32 +93,32 @@ const postData = async ( url = '', data = {})=>{
     });
   }
 
-const updateUIElements = async ()=> {
-    const response = await fetch(`${serverURL}/projectData`);
-    try {
-        const data = await response.json();
-        console.log(data);
+// const updateUIElements = async ()=> {
+//     const response = await fetch(`${serverURL}`);
+//     try {
+//         const data = await response.json();
+//         console.log(data);
 
-        countryCodeDiv.innerText = data.countryCode;
-        latitudeDiv.innerText = data.latitude;
-        longitudeDiv.innerText = data.longitude;
-        placeNameDiv.innerText = data.general;
-        document.getElementById('date').innerText = data.date;
+//         countryCodeDiv.innerText = data.countryCode;
+//         latitudeDiv.innerText = data.latitude;
+//         longitudeDiv.innerText = data.longitude;
+//         generalDiv.innerText = data.general;
+//         document.getElementById('date').innerText = data.date;
 
 
-    } catch(error) {
-        console.log(error);
-    }
-}
+//     } catch(error) {
+//         console.log(error);
+//     }
+// }
 
 
 // click event listener for generate button
-document.getElementById('generate').addEventListener('click', handleGenerateButton);
+document.getElementById('generate').addEventListener('click', handleSubmit);
 
 
 export {
-    handleGenerateButton,
-    updateUIElements,
+    handleSubmit,
     postData,
-    fetchData
+    fetchData,
+    daysLeft
 }
