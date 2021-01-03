@@ -35,11 +35,38 @@ app.get('/', function(request, response) {
 
 const apiGeonameURL = 'http://api.geonames.org/searchJSON?';
 app.post('/geoname', async function(request, response) {
-    const url = `${apiGeonameURL}q=${request.body.text}&maxRows=10&username=manpreetsingh`;
+    const url = `${apiGeonameURL}q=${request.body.text}&maxRows=10&username=${process.env.geoApi_UNAME}`;
     // console.log(url);
     try {
         const geonameResponse = await fetch(url);
         const jsonData = await geonameResponse.json();
+        // console.log(jsonData);
+        response.send(jsonData);
+    } catch(error) {
+        console.log(error);
+    }
+})
+
+const apiWeatherebitURL = 'https://api.weatherbit.io/v2.0/';
+app.post('/currentWbit', async function(request, response) {
+    const url = `${apiWeatherebitURL}current?${request.body.text}&key=${process.env.weatherbit_API_KEY}`;
+    // console.log(url);
+    try {
+        const weatherbitResponse = await fetch(url);
+        const jsonData = await weatherbitResponse.json();
+        // console.log(jsonData);
+        response.send(jsonData);
+    } catch(error) {
+        console.log(error);
+    }
+})
+
+app.post('/forecastWbit', async function(request, response) {
+    const url = `${apiWeatherebitURL}forecast/daily?${request.body.text}&key=${process.env.weatherbit_API_KEY}`;
+    // console.log(url);
+    try {
+        const weatherbitResponse = await fetch(url);
+        const jsonData = await weatherbitResponse.json();
         // console.log(jsonData);
         response.send(jsonData);
     } catch(error) {

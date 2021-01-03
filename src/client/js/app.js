@@ -3,14 +3,7 @@ import { updateUI } from './updateUI'
 /* Global Variables */
 
 const serverURL = 'http://localhost:8888';
-// const apiGeonameURL = 'http://api.geonames.org/searchJSON?';
 let destination = document.getElementById('field').value;
-
-
-// Create a new date instance dynamically with JS
-// let d = new Date();
-// let currentDate = d.getFullYear()+'/'+d.getMonth()+'/'+ d.getDate();
-
 
 
 const fetchData = async (url)=>{
@@ -31,25 +24,34 @@ const handleSubmit = async function () {
         destination = 'Paris'; 
     }
 
-    // const dateInput = document.getElementById('date-input').value;
+    const dateInput = document.getElementById('date-input').value;
     // console.log(destinationData);
-    const geonameResponse = await fetch(`${serverURL}/geoname`, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            'text': destination
-        }),
-    })
-    // console.log(response)
-
+    // const geonameResponse = await fetch(`${serverURL}/geoname`, {
+    //     method: 'POST',
+    //     credentials: 'same-origin',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //         'text': destination
+    //     }),
+    // })
+    const geonameResponse = await postData(`${serverURL}/geoname`, destination);
+    // const currentWbitResponse; 
     // recieve response from server and update UI
     try {
-        const data = await geonameResponse.json();
-        console.log(data);
-        updateUI(data);
+        console.log(geonameResponse);
+        const diffDays = daysLeft(dateInput);
+        if (diffDays <= 7) {
+            const data = await postData(`${serverURL}/currentWbit`, `&lat=${geonameResponse.geonames[0].lat}&lon=${geonameResponse.geonames[0].lng}`);
+            console.log(data);
+            updateUI(data);
+        }
+        else if (diffDays > 7) {
+            const data = await postData(`${serverURL}/forecastWbit`, `&lat=${geonameResponse.geonames[0].lat}&lon=${geonameResponse.geonames[0].lng}`);
+            console.log(data);
+            updateUI(data);
+        }
     } catch (error) {
         console.log("error: \n", error);
     }
@@ -81,7 +83,7 @@ const daysLeft = (firstDate) =>{
 }
 
 
-const postData = async ( url = '', data = {})=>{
+const postData = async ( url, data)=>{
     console.log(data);
       const response = await fetch(url, {
       method: 'POST', 
@@ -89,27 +91,12 @@ const postData = async ( url = '', data = {})=>{
       headers: {
           'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data), 
+      body: JSON.stringify({
+          'text': data,
+      }), 
     });
+    return await response.json();
   }
-
-// const updateUIElements = async ()=> {
-//     const response = await fetch(`${serverURL}`);
-//     try {
-//         const data = await response.json();
-//         console.log(data);
-
-//         countryCodeDiv.innerText = data.countryCode;
-//         latitudeDiv.innerText = data.latitude;
-//         longitudeDiv.innerText = data.longitude;
-//         generalDiv.innerText = data.general;
-//         document.getElementById('date').innerText = data.date;
-
-
-//     } catch(error) {
-//         console.log(error);
-//     }
-// }
 
 
 // click event listener for generate button
