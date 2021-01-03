@@ -56,18 +56,19 @@ const handleSubmit = async function () {
         if (diffDays <= 7) {
             const data = await postData(`${serverURL}/currentWbit`, `&lat=${geonameResponse.geonames[0].lat}&lon=${geonameResponse.geonames[0].lng}`);
             console.log(data);
-            // updateUI(data);
 
             const imageData = await postData(`${serverURL}/pixabay`, `q=${destination}&image_type=photo&pretty=true&category=places`);
             console.log(imageData)
+            updateUI(data, imageData);
         }
         else if (diffDays > 7) {
             const data = await postData(`${serverURL}/forecastWbit`, `&lat=${geonameResponse.geonames[0].lat}&lon=${geonameResponse.geonames[0].lng}`);
             console.log(data);
-            // updateUI(data);
 
             const imageData = await postData(`${serverURL}/pixabay`, `q=${destination}&image_type=photo&pretty=true&category=places`);
             console.log(imageData)
+            updateUI(data, imageData, diffDays);
+
         }
         
     } catch (error) {

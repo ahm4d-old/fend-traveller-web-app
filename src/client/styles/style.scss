@@ -133,13 +133,19 @@ label{
 #entryHolder{
     text-align: left;
     padding: 8px;
+    height: fit-content;
+    width: fit-content;
     // font-size: 1.1em;
 }
 
 span {
-    font-size: 1.1em;
     font-weight: 500;
     color: #333;
+}
+
+img {
+    border-radius: 8px;
+    text-align: center;
 }
 
 /* input{

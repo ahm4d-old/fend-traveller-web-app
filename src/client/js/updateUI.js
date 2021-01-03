@@ -1,16 +1,17 @@
-const updateUI = (apiData, day = 0) => {
+const updateUI = (placeData, imageData, day = 0) => {
     if (day > 15) {
         day = 15;
-    } else if (day < 1) {
+    } else if (day < 0) {
         day = 0;
     }
 
-    document.getElementById('country-code').innerHTML = `<span>Text:</span> ${apiData.country_code}`;
-    document.getElementById('weather-icon').innerHTML = `<span>Text:</span> &${apiData.data[day].weather.icon}`;
-    document.getElementById('weather-desc').innerHTML = `<span>Text:</span> ${apiData.data[day].weather.description}`;
-    document.getElementById('lat').innerHTML = `<span>Agreement:</span> ${apiData.data[day].temp}`;
-    document.getElementById('lng').innerHTML = `<span>Confidence:</span> ${apiData.data[day].ts}`;
-    document.getElementById('general').innerHTML = `<span>Irony:</span> ${apiData.data[day].uv}`;
+    document.getElementById('destination').innerHTML = `<span>Destination:</span> ${placeData.city_name}`;
+    document.getElementById('country-code').innerHTML = `<span>Country Code:</span> ${placeData.country_code}`;
+    document.getElementById('date').innerHTML = `<span>on Date:</span> ${placeData.data[day].datetime}`;
+    document.getElementById('weather-desc').innerHTML = `<span>Weather Description:</span> ${placeData.data[day].weather.description}`;
+    document.getElementById('general').innerHTML = `<span>Destination Temperature:</span> ${placeData.data[day].temp} C`;
+    document.getElementById('image').innerHTML = `<img src="${imageData.hits[day].webformatURL}" alt="${placeData.city_name}">`;
+
 }
 
 export {
