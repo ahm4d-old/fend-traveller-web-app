@@ -4,6 +4,9 @@ import { updateUI } from './updateUI'
 
 const serverURL = 'http://localhost:8888';
 let destination = document.getElementById('field').value;
+let dateInput = document.getElementById('date-input').value;
+let selectCountry = document.getElementById('select-country').value;
+
 
 
 const fetchData = async (url)=>{
@@ -18,26 +21,34 @@ const fetchData = async (url)=>{
     }
 
 
-    
-const handleSubmit = async function () {
+const validateInputs = () => {
     if (destination.length === 0) {
         destination = 'Paris'; 
+        // return false;
+    } 
+    else if (dateInput === "") {
+        dateInput = new Date("06/30/2019");
+        // return false;
+    } 
+    else if (selectCountry === "0") {
+        selectCountry = 'Algeria';
+        // return false;
+    }
+    else {
+        console.log('correct Inputs');
+        return true;
     }
 
-    const dateInput = document.getElementById('date-input').value;
-    // console.log(destinationData);
-    // const geonameResponse = await fetch(`${serverURL}/geoname`, {
-    //     method: 'POST',
-    //     credentials: 'same-origin',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //         'text': destination
-    //     }),
-    // })
+}
+
+    
+const handleSubmit = async function () {
+    console.log(selectCountry);
+    validateInputs();
+    // console.log(dateInput);
+    console.log(selectCountry);
     const geonameResponse = await postData(`${serverURL}/geoname`, destination);
-    // const currentWbitResponse; 
+
     // recieve response from server and update UI
     try {
         console.log(geonameResponse);
@@ -45,13 +56,20 @@ const handleSubmit = async function () {
         if (diffDays <= 7) {
             const data = await postData(`${serverURL}/currentWbit`, `&lat=${geonameResponse.geonames[0].lat}&lon=${geonameResponse.geonames[0].lng}`);
             console.log(data);
-            updateUI(data);
+            // updateUI(data);
+
+            const imageData = await postData(`${serverURL}/pixabay`, `q=${destination}&image_type=photo&pretty=true&category=places`);
+            console.log(imageData)
         }
         else if (diffDays > 7) {
             const data = await postData(`${serverURL}/forecastWbit`, `&lat=${geonameResponse.geonames[0].lat}&lon=${geonameResponse.geonames[0].lng}`);
             console.log(data);
-            updateUI(data);
+            // updateUI(data);
+
+            const imageData = await postData(`${serverURL}/pixabay`, `q=${destination}&image_type=photo&pretty=true&category=places`);
+            console.log(imageData)
         }
+        
     } catch (error) {
         console.log("error: \n", error);
     }
@@ -107,5 +125,6 @@ export {
     handleSubmit,
     postData,
     fetchData,
-    daysLeft
+    daysLeft,
+    validateInputs
 }

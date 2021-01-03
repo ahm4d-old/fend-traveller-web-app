@@ -73,3 +73,17 @@ app.post('/forecastWbit', async function(request, response) {
         console.log(error);
     }
 })
+
+const apiPixabayURL = 'https://pixabay.com/api/?';
+app.post('/pixabay', async function(request, response) {
+    const url = `${apiPixabayURL}key=${process.env.pixabay_API_KEY}&${request.body.text}`;
+    // console.log(url);
+    try {
+        const pixabayResponse = await fetch(url);
+        const jsonData = await pixabayResponse.json();
+        // console.log(jsonData);
+        response.send(jsonData);
+    } catch(error) {
+        console.log(error);
+    }
+})
