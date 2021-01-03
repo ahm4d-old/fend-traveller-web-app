@@ -22,18 +22,16 @@ const fetchData = async (url)=>{
 
 
 const validateInputs = () => {
-    if (destination.length === 0) {
-        destination = 'Paris'; 
-        // return false;
+
+    destination = document.getElementById('field').value;
+    dateInput = document.getElementById('date-input').value;
+    selectCountry = document.getElementById('select-country').value;
+
+    if (destination.length === 0 || dateInput === "") {
+        alert('Please enter inputs');
+        return false;
     } 
-    else if (dateInput === "") {
-        dateInput = new Date("06/30/2019");
-        // return false;
-    } 
-    else if (selectCountry === "0") {
-        selectCountry = 'Algeria';
-        // return false;
-    }
+
     else {
         console.log('correct Inputs');
         return true;
@@ -43,10 +41,11 @@ const validateInputs = () => {
 
     
 const handleSubmit = async function () {
-    console.log(selectCountry);
-    validateInputs();
-    // console.log(dateInput);
-    console.log(selectCountry);
+
+    if (!validateInputs()) {
+        return;
+    }
+
     const geonameResponse = await postData(`${serverURL}/geoname`, destination);
 
     // recieve response from server and update UI
@@ -59,7 +58,7 @@ const handleSubmit = async function () {
 
             const imageData = await postData(`${serverURL}/pixabay`, `q=${destination}&image_type=photo&pretty=true&category=places`);
             console.log(imageData)
-            updateUI(data, imageData);
+            updateUI(data, imageData, diffDays);
         }
         else if (diffDays > 7) {
             const data = await postData(`${serverURL}/forecastWbit`, `&lat=${geonameResponse.geonames[0].lat}&lon=${geonameResponse.geonames[0].lng}`);
@@ -74,16 +73,6 @@ const handleSubmit = async function () {
     } catch (error) {
         console.log("error: \n", error);
     }
-    // const data = {
-    //     countryCode: destinationData.geonames[0].countryCode,
-    //     latitude: destinationData.geonames[0].lat,
-    //     longitude: destinationData.geonames[0].lng,
-    //     general: destinationData.geonames[0].fcodeName,
-    //     date: dateInput,
-    //     daysLeft: daysLeft(dateInput)
-    // }
-    // await postData(serverURL, data);
-    // Client.updateUI(destinationData);
 }
 
 

@@ -13,7 +13,6 @@
     <div>
       <a href="https://github.com" target="_blank" id="info-button" class="fa fa-github"></a>
       <a href="https://www.linkedin.com/in/ahmed-al-turki/" target="_blank" id="info-button" class="fa fa-linkedin"></a>
-      <!-- <label for="icon" id="icon">&#8801;</label> -->
     </div>
   </div>
 
@@ -293,8 +292,6 @@
     <input type="date" id="date-input">
   </div>
   <div>
-    <!-- <button id="generate" type = "submit" onclick="return Client.handleSubmit(event)"
-     onsubmit="return Client.handleSubmit(event)"> Submit </button> -->
      <button id="generate" type = "submit"> Submit </button>
   </div>
   <div class ="holder entry">
@@ -312,15 +309,15 @@
 
 <script>
   // Check that service workers are supported
-  // if ('serviceWorker' in navigator) {
-  //     // Use the window load event to keep the page load performant
-  //     window.addEventListener('load', () => {
-  //         navigator.serviceWorker.register('/service-worker.js');
-  //     });
-  // }
-  // else {
-  //   console('No Support for Service Workers');
-  // }
+  if ('serviceWorker' in navigator) {
+      // Use the window load event to keep the page load performant
+      window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js');
+      });
+  }
+  else {
+    console('No Support for Service Workers');
+  }
  </script>
 </body>
 </html>
