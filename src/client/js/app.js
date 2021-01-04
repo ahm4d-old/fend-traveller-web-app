@@ -10,6 +10,7 @@ let destination = document.getElementById('field');
 let dateInput = document.getElementById('date-input');
 let selectCountry = document.getElementById('select-country');
 
+// checking to avoid null values
 if (destination && dateInput && selectCountry) {
     destination = destination.value;
     dateInput = dateInput.value;
@@ -17,7 +18,7 @@ if (destination && dateInput && selectCountry) {
 }
 
 
-
+// make sure inputs are entered
 const validateInputs = () => {
 
     destination = document.getElementById('field').value;
@@ -43,16 +44,23 @@ const handleSubmit = async function () {
         return;
     }
 
+    // retrieve geoname data
     const geonameResponse = await postData(`${serverURL}/geoname`, destination);
 
     // recieve response from server and update UI
     try {
         console.log(geonameResponse);
+        // calculate difference between today's and entered dates
         const diffDays = daysLeft(dateInput);
+
+        // retrieve forecasts if difference is over 7 days
         if (diffDays <= 7) {
+
+            // retrieve weatherbit data
             const data = await postData(`${serverURL}/currentWbit`, `&lat=${geonameResponse.geonames[0].lat}&lon=${geonameResponse.geonames[0].lng}`);
             console.log(data);
 
+            // retrieve pixabay data
             const imageData = await postData(`${serverURL}/pixabay`, `q=${destination}&image_type=photo&pretty=true&category=places`);
             console.log(imageData)
             updateUI(data, imageData, diffDays);
@@ -73,21 +81,22 @@ const handleSubmit = async function () {
 }
 
 
-const daysLeft = (firstDate) =>{
+const daysLeft = (inputDate) =>{
     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-    let dateFirst = new Date(firstDate);
+    let date = new Date(inputDate);
     let currentDate = new Date();
 
     // time difference
-    let timeDiff = Math.abs(currentDate.getTime() - dateFirst.getTime());
+    let timeDiff = Math.abs(currentDate.getTime() - date.getTime());
 
     // days difference
     let diffDays = Math.ceil(timeDiff / oneDay);
-    console.log(dateFirst, currentDate);
+    console.log(date, currentDate);
     return diffDays;
 }
 
 
+// post request from server with any url
 const postData = async ( url, data)=>{
     console.log(data);
       const response = await fetch(url, {
