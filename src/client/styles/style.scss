@@ -26,7 +26,7 @@ body{
 
 .entry{
     background: #E1FCFD;
-    font-size: 1.5em;
+    font-size: 1.1em;
     text-align: center;
     color: #4A5FC1;
     height: fit-content;
@@ -35,8 +35,8 @@ body{
 
 img {
     display: block;
-    height: 80%;
-    width: max-content;
+    height: 60%;
+    width: 60%;
 }
 
 
@@ -68,15 +68,12 @@ input, select{
 
 .title {
     text-align: center;
-    font-size: 1.4em;
+    font-size: 1.2em;
     color: #0C1115;
 }
 
 
 button, #info-button{
-    // display: grid;
-    // width: 50%;
-    // height: 50%;
     background: #9CF6FB;
     color: #0C1115;
     border-radius: 8px;
@@ -84,14 +81,12 @@ button, #info-button{
     text-align: center;
     font-size: 18px;
     font-weight: 500;
-    // margin: 4px 2px;
     opacity: 0.8;
     transition: 0.3s;
     display: inline-block;
     cursor: pointer;
 
     &:hover {
-        // background: #2171c2;
         cursor: pointer;
         opacity: 1;
     }
@@ -134,6 +129,29 @@ button, #info-button{
         text-align: right;
         padding-top: 1.3rem;
     }
+
+        
+    .entry{
+        background: #E1FCFD;
+        font-size: 1.5em;
+        text-align: center;
+        color: #4A5FC1;
+        height: fit-content;
+    }
+
+
+    img {
+        display: block;
+        height: 80%;
+        width: auto;
+    }
+
+
+    .title {
+        text-align: center;
+        font-size: 1.4em;
+        color: #0C1115;
+    }
 }
 
 
@@ -149,7 +167,6 @@ label{
     padding: 8px;
     height: fit-content;
     width: fit-content;
-    // font-size: 1.1em;
 }
 
 
