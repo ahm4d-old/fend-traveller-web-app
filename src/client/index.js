@@ -1,6 +1,5 @@
 import { handleSubmit,
         postData,
-        fetchData,
         daysLeft,
         validateInputs } from './js/app'
 import { updateUI } from './js/updateUI'
@@ -13,7 +12,6 @@ export {
     handleSubmit,
     updateUI,
     postData,
-    fetchData,
     daysLeft,
     validateInputs
 }

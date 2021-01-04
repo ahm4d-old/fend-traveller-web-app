@@ -1,24 +1,21 @@
 import { updateUI } from './updateUI'
 
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 /* Global Variables */
 
 const serverURL = 'http://localhost:8888';
-let destination = document.getElementById('field').value;
-let dateInput = document.getElementById('date-input').value;
-let selectCountry = document.getElementById('select-country').value;
+let destination = document.getElementById('field');
+let dateInput = document.getElementById('date-input');
+let selectCountry = document.getElementById('select-country');
 
+if (destination && dateInput && selectCountry) {
+    destination = destination.value;
+    dateInput = dateInput.value;
+    selectCountry = selectCountry.value;
+}
 
-
-const fetchData = async (url)=>{
-    const response = await fetch(url) 
-        try {
-            const data = await response.json();
-            console.log(data);
-            return data;
-        } catch(error) {
-            console.log('fetchData Error', error);
-        }
-    }
 
 
 const validateInputs = () => {
@@ -108,13 +105,15 @@ const postData = async ( url, data)=>{
 
 
 // click event listener for generate button
-document.getElementById('generate').addEventListener('click', handleSubmit);
+let button = document.getElementById('generate');
+if (button){
+    button.addEventListener('click', handleSubmit);
+}
 
 
 export {
     handleSubmit,
     postData,
-    fetchData,
     daysLeft,
     validateInputs
 }
