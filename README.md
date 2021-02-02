@@ -21,10 +21,12 @@ This project is a travel planner which takes destination and date inputs, and ou
     - http://www.geonames.org/
     - https://www.weatherbit.io/api
     - https://pixabay.com/api/ 
+    
 3. put key in .env file as:
     - `geoApi_UNAME=<<Your API username for geonames>>`.
     - `weatherbit_API_KEY=<<Your API key for weatherbit>>`.
     - `pixabay_API_KEY=<<Your API username for pixabay>>`.
+    
 4. available commands for the project:
     - `npm run dev` to run app in development mode.
     - `npm run build` to run app in production mode.
